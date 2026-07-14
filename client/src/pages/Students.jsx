@@ -71,15 +71,16 @@ function Students() {
       setStudents(newArray);
     }
 
-    function updateStudent(editedStudent){
-      students.map((student) => {
-        if(student.id === editedStudent.id){
-          student.name = editedStudent.name
-          student.department = editedStudent.department
-          student.cgpa = editedStudent.cgpa
-          student.placed = editedStudent.placed
+    function updateStudent(editedStudent) {
+      const updatedStudents = students.map((student) => {
+        if (student.id === editedStudent.id) {
+          return editedStudent;
         }
-      })
+
+        return student;
+      });
+
+      setStudents(updatedStudents);
     }
     
     function changeSelectedStudents(student){

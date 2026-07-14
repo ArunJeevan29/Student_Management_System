@@ -7,11 +7,14 @@ function AddStudentForm({handleShowForm,addStudent,updateStudent,selectedStudent
     const [placed, setPlaced] = useState(false)
 
     useEffect(() => {
-        setName(selectedStudent.name)
-        setDept(selectedStudent.department)
-        setCgpa(selectedStudent.cgpa)
-        setPlaced(selectedStudent.placed)
-    },[selectedStudent])
+      if (selectedStudent) {
+        setName(selectedStudent.name);
+        setDept(selectedStudent.department);
+        setCgpa(selectedStudent.cgpa);
+        setPlaced(selectedStudent.placed);
+      }
+    }, [selectedStudent]);
+
 
     function handleAddStudent(event){
         event.preventDefault();
@@ -28,15 +31,14 @@ function AddStudentForm({handleShowForm,addStudent,updateStudent,selectedStudent
             placed
         };
 
-        const editedStudent = {
-            id: selectedStudent.id,
-            name,
-            department: dept,
-            cgpa,
-            placed
-        };
-
         if (selectedStudent){
+            const editedStudent = {
+                id: selectedStudent.id,
+                name,
+                department: dept,
+                cgpa,
+                placed
+            };
             updateStudent(editedStudent)
         } else {
             addStudent(newStudent)
