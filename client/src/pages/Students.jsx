@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import StudentCard from "../components/StudentCard";
 import AddStudentForm from "../components/AddStudentForm";
 import DeleteModal from "../components/DeleteModal";
@@ -13,25 +13,32 @@ function Students({ students, setStudents }) {
   const [currentPage, setCurrentPage] = useState(1);
   const studentsPerPage = 8;
   
-  const filteredStudents = students.filter((student) => {
-    return student.name.toLowerCase().includes(searchStudent.toLowerCase());
-  })
+  const filteredStudents = useMemo(() => {
+    return students.filter((student) => {
+      return student.name.toLowerCase().includes(searchStudent.toLowerCase());
+    })
+  },[students, searchStudent])
   
   
-  const sortedStudents = [...filteredStudents];
+  const sortedStudents = useMemo(() => {
+    const sorted = [...filteredStudents];
+
+    if(sortBy === "name-asc"){
+      sorted.sort((a,b) => a.name.localeCompare(b.name));
+    }
+    else if(sortBy === "name-desc"){
+      sorted.sort((a,b) => b.name.localeCompare(a.name));
+    }
+    else if(sortBy === "cgpa-high"){
+      sorted.sort((a,b) => b.cgpa - a.cgpa);
+    }
+    else if(sortBy === "cgpa-low"){
+      sorted.sort((a,b) => a.cgpa - b.cgpa);
+    }
+    return sorted
+  }, [filteredStudents,sortBy]);
   
-  if(sortBy === "name-asc"){
-    sortedStudents.sort((a,b) => a.name.localeCompare(b.name));
-  }
-  else if(sortBy === "name-desc"){
-    sortedStudents.sort((a,b) => b.name.localeCompare(a.name));
-  }
-  else if(sortBy === "cgpa-high"){
-    sortedStudents.sort((a,b) => b.cgpa - a.cgpa);
-  }
-  else if(sortBy === "cgpa-low"){
-    sortedStudents.sort((a,b) => a.cgpa - b.cgpa);
-  }
+
 
   const currentStudents = sortedStudents.slice((currentPage - 1) * studentsPerPage, currentPage * studentsPerPage);
   const totalPages = Math.ceil(sortedStudents.length / studentsPerPage);
