@@ -18,7 +18,7 @@ const studentSchema = new mongoose.Schema(
     },
     placed: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   {
