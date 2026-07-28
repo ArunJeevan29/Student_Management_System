@@ -7,7 +7,7 @@ function StudentCard({student,changeSelectedStudents, handleShowDelete}) {
         <div className="p-6 bg-white border-2 border-black rounded-xl hover:bg-black hover:text-white transition cursor-pointer group" onClick={() => navigate(`/students/${student.id}`)}>
             <div>
                 <h2 className="text-2xl font-bold">{student.name}</h2>
-                <h3 className="group-hover:text-white mt-2">Dept: {student.department}</h3>
+                <h3 className="font-semibold group-hover:text-white mt-2">Dept: {student.department}</h3>
                 <h3 className="font-semibold group-hover:text-white mt-2">CGPA: {student.cgpa}</h3>
                 <h3 className="font-semibold group-hover:text-white mt-2">Placed: {student.placed ? "Yes" : "No"}</h3>
             </div>

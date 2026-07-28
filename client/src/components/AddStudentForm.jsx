@@ -19,7 +19,7 @@ function AddStudentForm({handleShowForm,addStudent,updateStudent,selectedStudent
     useEffect(() => {
       if (selectedStudent) {
         setName(selectedStudent.name);
-        setDept(selectedStudent.department);
+        setDept(selectedStudent.dept);
         setCgpa(selectedStudent.cgpa);
         setPlaced(selectedStudent.placed);
       }

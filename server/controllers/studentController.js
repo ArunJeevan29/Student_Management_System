@@ -11,13 +11,13 @@ const getStudents = async (req, res) => {
 
 const createStudent = async (req, res) => {
   try {
-    const { name, dept, cgpa } = req.body;
-    if (!name || !dept || !cgpa) {
+    const { name, department, cgpa } = req.body;
+    if (!name || !department || !cgpa) {
       return res.status(400).json({ message: "Please fill all the fields" });
     }
     const newStudent = {
       name,
-      dept,
+      department,
       cgpa,
     };
     const student = await Student.create(newStudent);
@@ -43,10 +43,10 @@ const getStudent = async (req, res) => {
 const editStudent = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, dept, cgpa, placed } = req.body;
+    const { name, department, cgpa, placed } = req.body;
     const student = await Student.findByIdAndUpdate(
       id,
-      { name, dept, cgpa, placed },
+      { name, department, cgpa, placed },
       { new: true },
     );
     if (!student) {
