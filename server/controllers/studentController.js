@@ -11,7 +11,7 @@ const getStudents = async (req, res) => {
 
 const createStudent = async (req, res) => {
   try {
-    const { name, department, cgpa } = req.body;
+    const { name, department, cgpa, placed } = req.body;
     if (!name || !department || !cgpa) {
       return res.status(400).json({ message: "Please fill all the fields" });
     }
@@ -19,9 +19,12 @@ const createStudent = async (req, res) => {
       name,
       department,
       cgpa,
+      placed,
     };
     const student = await Student.create(newStudent);
-    return res.status(201).json(student);
+    return res
+      .status(201)
+      .json({ message: "Student created successfully", student });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -44,6 +47,9 @@ const editStudent = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, department, cgpa, placed } = req.body;
+    if (!name || !department || !cgpa) {
+      return res.status(400).json({ message: "Please fill all the fields" });
+    }
     const student = await Student.findByIdAndUpdate(
       id,
       { name, department, cgpa, placed },
@@ -52,7 +58,7 @@ const editStudent = async (req, res) => {
     if (!student) {
       return res.status(404).json({ message: "Student not Found" });
     }
-    return res.status(200).json(student);
+    return res.status(200).json({ message: "Student Updated Successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -70,6 +76,7 @@ const deleteStudent = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
 module.exports = {
   getStudents,
   createStudent,

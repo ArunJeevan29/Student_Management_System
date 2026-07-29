@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 function StudentCard({student,changeSelectedStudents, handleShowDelete}) {
     const navigate = useNavigate()
     return(
-        <div className="p-6 bg-white border-2 border-black rounded-xl hover:bg-black hover:text-white transition cursor-pointer group" onClick={() => navigate(`/students/${student.id}`)}>
+        <div className="p-6 bg-white border-2 border-black rounded-xl hover:bg-black hover:text-white transition cursor-pointer group" onClick={() => navigate(`/students/${student._id}`)}>
             <div>
                 <h2 className="text-2xl font-bold">{student.name}</h2>
                 <h3 className="font-semibold group-hover:text-white mt-2">Dept: {student.department}</h3>

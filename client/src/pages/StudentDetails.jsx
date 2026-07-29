@@ -5,7 +5,7 @@ function StudentDetails({ students }) {
   const { id } = useParams();
   const navigate = useNavigate()
 
-  const student = students.find((student) => student.id === Number(id));
+  const student = students.find((student) => student._id === Number(id));
   console.log(student);
 
   return (
