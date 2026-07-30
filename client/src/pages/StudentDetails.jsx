@@ -1,12 +1,30 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
-function StudentDetails({ students }) {
+function StudentDetails() {
+  const navigate = useNavigate();
   const { id } = useParams();
-  const navigate = useNavigate()
+  const [student, setStudent] = useState(null);
 
-  const student = students.find((student) => student._id === Number(id));
-  console.log(student);
+  useEffect(() => {
+    fetchStudent();
+  }, [id]);
+
+  async function fetchStudent() {
+    try {
+      const response = await fetch(`http://localhost:3000/students/${id}`);
+      const data = await response.json();
+      if (response.ok) {
+        setStudent(data);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
 
   return (
     <>
@@ -32,12 +50,16 @@ function StudentDetails({ students }) {
                 <span>{student.placed ? "✅ Yes" : "❌ No"}</span>
               </div>
               <div className="mt-8">
-                <button onClick={() => navigate(-1)} className="bg-black text-white px-5 py-2 border-2 border-black hover:bg-white hover:text-black transition">← Back</button>
+                <button
+                  onClick={() => navigate(-1)}
+                  className="bg-black text-white px-5 py-2 border-2 border-black hover:bg-white hover:text-black transition"
+                >
+                  ← Back
+                </button>
               </div>
             </div>
           </div>
         </div>
-        
       ) : (
         <div className="p-8">
           <h1>Student Not Found</h1>

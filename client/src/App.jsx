@@ -41,20 +41,8 @@ function App() {
         <Sidebar />
         <Routes>
           <Route path="/" element={<Dashboard students={students} />} />
-          <Route
-            path="/students"
-            element={
-              <Students
-                students={students}
-                setStudents={setStudents}
-                fetchStudents={fetchStudents}
-              />
-            }
-          />
-          <Route
-            path="/students/:id"
-            element={<StudentDetails students={students} />}
-          />
+          <Route path="/students" element={ <Students students={students} fetchStudents={fetchStudents} /> } />
+          <Route path="/students/:id" element={<StudentDetails students={students} />} />
         </Routes>
       </div>
     </div>

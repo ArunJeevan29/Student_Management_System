@@ -1,9 +1,9 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import StudentCard from "../components/StudentCard";
 import AddStudentForm from "../components/AddStudentForm";
 import DeleteModal from "../components/DeleteModal";
 
-function Students({ students, setStudents, fetchStudents }) {
+function Students({ students, fetchStudents }) {
   const [showForm, setShowForm] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [showDeletedModal, setShowDeletedModal] = useState(false);
@@ -40,6 +40,12 @@ function Students({ students, setStudents, fetchStudents }) {
   );
   const totalPages = Math.ceil(sortedStudents.length / studentsPerPage);
 
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(Math.max(1, totalPages));
+    }
+  }, [currentPage, totalPages]);
+
   const changeSelectedStudents = useCallback((student) => {
     setSelectedStudent(student);
     setShowForm(true);
@@ -58,10 +64,6 @@ function Students({ students, setStudents, fetchStudents }) {
   const handleCancelShowDelete = useCallback(() => {
     setSelectedDeleteStudent(null);
     setShowDeletedModal(false);
-    const newTotalPages = Math.ceil(students.length() / studentsPerPage);
-    if (currentPage > newTotalPages) {
-      setCurrentPage(Math.max(1, newTotalPages));
-    }
   }, []);
 
   return (
