@@ -1,4 +1,3 @@
-// Main server entry point
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -16,7 +15,7 @@ app.use(studentRoutes);
 mongoose
   .connect("mongodb://localhost:27017/studentDB")
   .then(() => {
-    console.log("MongoDB Connected");
+    console.log("MongoDB Connected Successfully");
   })
   .catch((err) => {
     console.log(err);
