@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-hot-toast";
+import { updateStudent, createStudent } from "../api/studentApi";
 
 function AddStudentForm({ handleShowForm, fetchStudents, selectedStudent }) {
   const [name, setName] = useState("");
@@ -62,24 +63,13 @@ function AddStudentForm({ handleShowForm, fetchStudents, selectedStudent }) {
           cgpa,
           placed,
         };
-        const response = await fetch(
-          `http://localhost:3000/students/${selectedStudent._id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(editedStudent),
-          },
+        const response = await updateStudent(
+          selectedStudent._id,
+          editedStudent,
         );
-        const data = await response.json();
-        if (response.ok) {
-          await fetchStudents();
-          toast.success(data.message);
-          handleShowForm();
-        } else {
-          toast.error(data.message);
-        }
+        toast.success(response.data.message);
+        await fetchStudents();
+        handleShowForm();
       } else {
         const newStudent = {
           name,
@@ -88,35 +78,24 @@ function AddStudentForm({ handleShowForm, fetchStudents, selectedStudent }) {
           placed,
         };
 
-        const response = await fetch("http://localhost:3000/students", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newStudent),
+        const response = await createStudent(newStudent);
+        toast.success(response.data.message);
+        await fetchStudents();
+
+        setName("");
+        setdepartment("");
+        setCgpa(0);
+        setPlaced(false);
+
+        setError({
+          name: "",
+          department: "",
+          cgpa: "",
         });
-        const data = await response.json();
-        if (response.ok) {
-          await fetchStudents();
-          toast.success(data.message);
-
-          setName("");
-          setdepartment("");
-          setCgpa(0);
-          setPlaced(false);
-
-          setError({
-            name: "",
-            department: "",
-            cgpa: "",
-          });
-          handleShowForm();
-        } else {
-          toast.error(data.message);
-        }
+        handleShowForm();
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   }
 

@@ -1,4 +1,5 @@
 import { toast } from "react-hot-toast";
+import { deleteStudent } from "../api/studentApi";
 function DeleteModal({
   handleCancelShowDelete,
   selectedDeleteStudent,
@@ -6,20 +7,12 @@ function DeleteModal({
 }) {
   async function handleDelete() {
     try {
-      const response = await fetch(
-        `http://localhost:3000/students/${selectedDeleteStudent._id}`,
-        { method: "DELETE" },
-      );
-      const data = await response.json();
-      if (response.ok) {
-        await fetchStudents();
-        toast.success(data.message);
-        handleCancelShowDelete();
-      } else {
-        toast.error(data.message);
-      }
+      const response = await deleteStudent(selectedDeleteStudent._id);
+      toast.success(response.data.message);
+      await fetchStudents();
+      handleCancelShowDelete();
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   }
   return (

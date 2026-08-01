@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { getStudent } from "../api/studentApi";
 
 function StudentDetails() {
   const navigate = useNavigate();
@@ -14,15 +15,10 @@ function StudentDetails() {
 
   async function fetchStudent() {
     try {
-      const response = await fetch(`http://localhost:3000/students/${id}`);
-      const data = await response.json();
-      if (response.ok) {
-        setStudent(data);
-      } else {
-        toast.error(data.message);
-      }
+      const response = await getStudent(id);
+      setStudent(response.data);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   }
 

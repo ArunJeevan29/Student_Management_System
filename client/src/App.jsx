@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { getStudents } from "./api/studentApi";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
@@ -11,9 +12,12 @@ function App() {
   const [students, setStudents] = useState([]);
 
   async function fetchStudents() {
-    const response = await fetch("http://localhost:3000/students");
-    const data = await response.json();
-    setStudents(data);
+    try {
+      const response = await getStudents();
+      setStudents(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -41,8 +45,16 @@ function App() {
         <Sidebar />
         <Routes>
           <Route path="/" element={<Dashboard students={students} />} />
-          <Route path="/students" element={ <Students students={students} fetchStudents={fetchStudents} /> } />
-          <Route path="/students/:id" element={<StudentDetails students={students} />} />
+          <Route
+            path="/students"
+            element={
+              <Students students={students} fetchStudents={fetchStudents} />
+            }
+          />
+          <Route
+            path="/students/:id"
+            element={<StudentDetails students={students} />}
+          />
         </Routes>
       </div>
     </div>
