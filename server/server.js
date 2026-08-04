@@ -1,7 +1,9 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 const Student = require("./models/Student");
+const cors = require("cors");
 const studentRoutes = require("./routes/studentRoutes");
 const authRoutes = require("./routes/authRoutes");
 const loggerMiddleware = require("./middleware/loggerMiddleware");
@@ -15,14 +17,13 @@ app.use(studentRoutes);
 app.use(authRoutes);
 
 mongoose
-  .connect("mongodb://localhost:27017/studentDB")
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected Successfully");
   })
   .catch((err) => {
     console.log(err);
   });
-
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server is running... ");
 });
