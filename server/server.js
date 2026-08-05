@@ -13,8 +13,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(loggerMiddleware);
-app.use(studentRoutes);
-app.use(authRoutes);
+app.use("/api/students", studentRoutes);
+app.use("/api/auth", authRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
