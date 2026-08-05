@@ -1,15 +1,24 @@
+import { Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Toaster } from "react-hot-toast";
+
 import { getStudents } from "./api/studentApi";
+
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+
 import Dashboard from "./pages/Dashboard";
 import Students from "./pages/Students";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import StudentDetails from "./pages/StudentDetails";
-import { Routes, Route } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 
 function App() {
   const [students, setStudents] = useState([]);
+
+  const location = useLocation();
+  const hideLayout =
+    location.pathname === "/login" || location.pathname === "/register";
 
   async function fetchStudents() {
     try {
@@ -40,9 +49,10 @@ function App() {
           },
         }}
       />
-      <Navbar />
+
+      {!hideLayout && <Navbar />}
       <div className="flex flex-1">
-        <Sidebar />
+        {!hideLayout && <Sidebar />}
         <Routes>
           <Route path="/" element={<Dashboard students={students} />} />
           <Route
@@ -51,6 +61,8 @@ function App() {
               <Students students={students} fetchStudents={fetchStudents} />
             }
           />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />}/>
           <Route
             path="/students/:id"
             element={<StudentDetails students={students} />}
