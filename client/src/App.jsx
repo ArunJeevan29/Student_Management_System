@@ -6,11 +6,13 @@ import { getStudents } from "./api/studentApi";
 
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-import Dashboard from "./pages/Dashboard";
-import Students from "./pages/Students";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import Students from "./pages/Students";
+import Profile from "./pages/Profile";
 import StudentDetails from "./pages/StudentDetails";
 
 function App() {
@@ -54,18 +56,39 @@ function App() {
       <div className="flex flex-1">
         {!hideLayout && <Sidebar />}
         <Routes>
-          <Route path="/" element={<Dashboard students={students} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Dashboard students={students} />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/students"
             element={
-              <Students students={students} fetchStudents={fetchStudents} />
+              <ProtectedRoute>
+                <Students students={students} fetchStudents={fetchStudents} />
+              </ProtectedRoute>
             }
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />}/>
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/students/:id"
-            element={<StudentDetails students={students} />}
+            element={
+              <ProtectedRoute>
+                <StudentDetails students={students} />
+              </ProtectedRoute>
+            }
           />
         </Routes>
       </div>
