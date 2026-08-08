@@ -71,4 +71,26 @@ const loginUser = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-module.exports = { registerUser, loginUser };
+
+const getCurrentUser = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const currentUser = await User.findById(id);
+
+    if (!currentUser) {
+      return res.status(400).json({ message: "No User Found" });
+    }
+
+    const user = {
+      id: currentUser._id,
+      name: currentUser.name,
+      email: currentUser.email,
+      role: currentUser.role,
+    };
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, getCurrentUser };
